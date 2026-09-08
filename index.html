@@ -296,6 +296,59 @@
             text-align: left;
         }
 
+        .result-hook {
+            font-size: 17px;
+            color: #86ABD4;
+            margin-bottom: 30px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .result-cta {
+            background: #252D3D;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .result-cta h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #86ABD4;
+        }
+
+        .result-cta p {
+            font-size: 15px;
+            color: #D0D0D0;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background: #20BA57;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-whatsapp:active {
+            transform: translateY(-1px);
+        }
+
         .email-form {
             background: #252D3D;
             padding: 25px;
@@ -406,7 +459,7 @@
     <div class="container">
         <!-- Landing -->
         <div id="landing" class="landing">
-            <h1>Pourquoi tes relations finissent toujours de la même façon ?</h1>
+            <h1>Découvre en 3 minutes ce qui sabote tes relations</h1>
             <p>Découvre le pattern qui se répète, en 9 questions.</p>
             <button class="btn-start" onclick="startQuiz()">Commencer</button>
         </div>
@@ -672,14 +725,11 @@
         <!-- Result -->
         <div id="result" class="result">
             <h2 id="profileName"></h2>
-            <div class="result-score" id="profileScore"></div>
             <div class="result-description" id="profileDescription"></div>
-            <div class="result-opening" id="profileOpening"></div>
-            <div class="email-form">
-                <h3>Laisse-moi ton contact</h3>
-                <p>Je regarde ton profil et je reviens personnellement vers toi avec ton analyse complète et tes premières pistes.</p>
-                <input type="text" id="emailInput" class="email-input" placeholder="Ton numéro WhatsApp ou @Instagram" />
-                <button class="btn-submit" onclick="submitEmail()">Envoyer</button>
+            <div class="result-cta">
+                <h3>Et maintenant ?</h3>
+                <p>Si tu t'es reconnu et que tu veux comprendre d'où ça vient vraiment, et surtout comment on en sort, écris-moi directement. Je regarde ton profil et je te réponds personnellement.</p>
+                <button class="btn-whatsapp" id="whatsappBtn" onclick="openWhatsApp()">Écrire à Hugo</button>
             </div>
             <div class="disclaimer">
                 <p>Cet outil est une aide à la prise de conscience de tes patterns relationnels. Il ne remplace pas un diagnostic psychologique ni un suivi professionnel.</p>
@@ -692,32 +742,37 @@
             "Poursuivant": {
                 name: "Le Poursuivant",
                 max: 15,
-                description: "Tu as du mal à être seul. Quand l'autre s'éloigne, ça t'active, une boule au ventre, le besoin de te rassurer. Tu peux confondre le manque avec l'amour, et rester accroché à quelqu'un juste pour ne pas ressentir le vide.",
-                opening: "Tu as une grande capacité à chercher la connexion. C'est une force. Mais apprendre à t'enraciner en toi d'abord, avant de chercher chez l'autre, ça change tout."
+                hook: "Quand elle est là, ça va. Mais dès qu'elle prend de la distance, quelque chose se serre dans ton ventre.",
+                description: "Ce n'est pas juste « t'es un mec attaché », c'est plus profond. Le Poursuivant, c'est quelqu'un qui a du mal avec le vide. Quand la relation va bien, quand l'autre est présent, tu es bien. Mais dès qu'il y a une distance, elle met du temps à répondre, elle a besoin d'espace, un silence s'installe, quelque chose s'active. Une boule au ventre, une tension, cette petite alarme : « et si elle se détachait ? ». Et tu ne supportes pas cette sensation. Alors tu fais tout pour la faire disparaître : tu relances, tu cherches à te rassurer, tu te rapproches.\n\nLe problème, c'est que ce que tu prends pour de l'amour, c'est souvent ce mécanisme-là qui tourne. Tu peux confondre l'intensité, le manque, la peur de perdre, le soulagement quand elle revient, avec un vrai lien. Et pire : plus tu poursuis pour combler ce vide, plus l'autre étouffe et s'éloigne pour de vrai. Ce que tu fais pour ne pas la perdre, c'est exactement ce qui la fait fuir.\n\nVoilà ce que la plupart ne voient pas : ce vide, cette peur de l'abandon, ça ne vient pas de la personne en face. C'est en toi, ça date d'avant elle. Et tu ne peux pas le raisonner, tu peux te dire « je vais lâcher » et te retrouver le téléphone à la main dix minutes après, parce que ton corps part en manque avant même que tu réfléchisses. Comprendre ne suffit pas. C'est ce vide-là, à la racine, qu'on apprend à apaiser.",
+                opening: ""
             },
             "Contrôleur": {
                 name: "Le Contrôleur",
                 max: 13,
-                description: "Tu as besoin de clarté, de cadre, de prévisibilité. Ce qui fait ta force au travail devient un piège en amour : dès que l'autre est autonome ou imprévisible, tu le vis comme une menace et tu resserres.",
-                opening: "Tu as une vraie rigueur, tu veux de la clarté et de la solidité. C'est une force en business. Mais en amour, la maîtrise totale éteint la confiance. Il y a un leadership qui attire vraiment, celui qui laisse respirer."
+                hook: "Au travail, tu maîtrises tout. Mais en amour, l'autre est un électron libre.",
+                description: "Ce n'est pas de la jalousie ou du « mec toxique », c'est plus fin que ça. Tu as construit ta vie sur la maîtrise. Au boulot, dans tes projets, quand tu tiens le cadre, t'es excellent, solide, les gens comptent sur toi. C'est une vraie force. Le truc, c'est qu'une relation, ça ne se pilote pas comme un projet. En face, il y a quelqu'un d'autonome, d'imprévisible, un électron libre que tu ne contrôles pas. Et ça, ton système le lit comme une menace.\n\nAlors tu fais ce que tu sais faire : tu reprends le contrôle. Tu analyses ses messages, tu notes les détails, tu veux des certitudes, un cadre clair. Pas par méchanceté, juste pour te rassurer. Sauf que c'est l'inverse qui se produit : plus tu serres, plus l'autre étouffe et prend ses distances. Et cette distance, ton cerveau la lit comme la preuve qu'il fallait contrôler encore plus. Tu crées toi-même ce que tu redoutes.\n\nVoilà ce que la plupart ne voient pas : sous le besoin de contrôle, il y a une peur. La peur que si tu lâches, tout t'échappe, tout s'effondre. Et ça, tu ne peux pas le raisonner, tu peux te dire « je vais lui laisser de l'espace » et resserrer la vis dès que tu sens un truc t'échapper, parce que ton corps part en alerte avant même que tu réfléchisses. Comprendre ne suffit pas. C'est cette alerte-là, dans le corps, qu'on apprend à désamorcer.",
+                opening: ""
             },
             "Mur": {
                 name: "Le Mur émotionnel",
                 max: 20,
-                description: "Tu gardes tout à distance. Les conversations intimes, les émotions à mettre en mots, ça t'épuise ou te met mal à l'aise, alors tu te fermes, tu deviens froid, tu gères seul. Tu es à l'aise quand tu maîtrises ; dès que c'est un électron libre que tu ne contrôles pas, tu te retires.",
-                opening: "Tu as une belle autonomie, tu ne dépends pas émotionnellement. C'est une force. Mais l'intimité n'est pas une faiblesse, c'est la vraie force d'une relation. Apprendre à te montrer vulnérable, ça libère tout."
+                hook: "Tu gères seul, tu ne montres rien. Au travail ça marche, en amour quelque chose se verrouille.",
+                description: "Le Mur, ce n'est pas de la froideur. C'est une protection. Quelque part, t'as appris qu'être vulnérable, c'était dangereux, qu'on pouvait s'en servir contre toi. Alors ton corps a trouvé une solution : ne pas s'exposer. Gérer seul. Garder le contrôle.\n\nEt ça marche, dans un sens. Au travail, dans les défis, quand tu maîtrises, t'es solide, fiable, les gens comptent sur toi. Mais en amour, c'est l'inverse qui est demandé : il faut lâcher le contrôle, se montrer, accepter d'être un peu à nu. Et là, quelque chose en toi se verrouille, souvent sans que tu l'aies décidé. Tu deviens distant, tu te fermes, et la personne en face le sent, même si elle ne comprend pas pourquoi.\n\nLe truc que la plupart des hommes ne voient pas : ce n'est pas un problème de volonté. Tu peux décider mille fois « cette fois je vais m'ouvrir », et te braquer quand même au premier truc. Parce que ça ne se joue pas dans la tête. C'est ton système nerveux qui bascule en mode protection avant même que tu réfléchisses. Comprendre ne suffit pas. C'est dans le corps que ça se règle.",
+                opening: ""
             },
             "Sauveur": {
                 name: "Le Sauveur",
                 max: 15,
-                description: "Tu te rends indispensable. Tu portes la relation, tu réponds aux besoins de l'autre, tu performes pour être aimé, et tu t'oublies en chemin. Le problème n'est pas que tu donnes, c'est que tu donnes pour mériter ta place, jusqu'à disparaître.",
-                opening: "Tu as un vrai cœur et de l'empathie, ça attire. Mais donner sans fin t'épuise et crée une fausse relation. Celle qui t'aime vraiment ne veut pas d'un martyr, elle veut un égal."
+                hook: "Tu donnes, tu portes. Plus tu donnes, plus tu as l'impression de disparaître.",
+                description: "En surface, c'est beau : tu donnes tout, tu es là pour l'autre, tu portes la relation. Tout le monde t'apprécie pour ça. Mais si tu regardes en dessous, ce n'est pas que de l'amour, c'est une façon de te rendre indispensable pour ne pas être rejeté. Tu as appris, quelque part, que pour mériter ta place, il fallait performer, être utile, en faire assez. Alors tu donnes. Tu anticipes les besoins de l'autre, tu gères son humeur, tu te mets en quatre, et tu t'oublies complètement en chemin.\n\nLe problème, c'est que ça ne remplit jamais. Tu attends un retour qui ne vient pas comme tu voudrais, et là ça fait mal : « j'ai tout donné, et ce n'est même pas réciproque ». Tu t'épuises, tu perds tes propres limites, et au fond tu doutes, parce qu'une part de toi sait qu'on t'aime pour ce que tu fais, pas pour qui tu es.\n\nVoilà ce que la plupart ne voient pas : le vrai sujet, ce n'est pas que tu donnes trop. C'est que tu ne crois pas qu'on puisse t'aimer si tu arrêtais de donner. Et ça, tu ne peux pas le raisonner, tu peux te dire « je vais moins me sacrifier » et recommencer dès que quelqu'un a besoin de toi, parce que ton corps bascule là-dedans avant même que tu réfléchisses. Comprendre ne suffit pas. C'est en dessous que ça se travaille.",
+                opening: ""
             },
             "Indécis": {
                 name: "L'Indécis",
                 max: 19,
-                description: "Tu oscilles. Tu t'engages puis tu prends peur, tu quittes puis tu veux revenir, tu es enthousiaste puis tu doutes. Personne ne sait sur quel pied danser, toi le premier.",
-                opening: "Tu gardes tes options ouvertes, tu réfléchis avant d'agir. C'est prudent. Mais l'indécision maintient tout le monde en suspens, y compris toi. Il y a une clarté qui libère, même si elle fait peur."
+                hook: "Tout va bien, elle te plaît, et pile là quelque chose se referme.",
+                description: "Le truc, ce n'est pas que tu ne sais pas ce que tu veux. C'est que tu veux ET tu fuis, en même temps. Ça va bien avec quelqu'un, et pile au moment où ça devient réel, où il faudrait vraiment t'engager, quelque chose se serre. Une part de toi tire vers l'avant, une autre appuie sur le frein. Et souvent tu ne le décides même pas, tu te retrouves à prendre du recul, à devenir vague, à laisser traîner. Puis dès que la personne s'éloigne pour de vrai, le manque revient et tu la veux à nouveau.\n\nLe résultat, c'est que tu maintiens tout le monde en suspens, la personne en face, mais toi le premier. Tu ne t'engages jamais assez pour être là, tu ne pars jamais assez pour être libre. Tu restes coincé entre les deux.\n\nEt voilà ce que la plupart ne voient pas : ce n'est pas un problème de choix. Tu peux te répéter « cette fois je m'engage » et te braquer quand même dès que ça devient sérieux. Parce que ça ne se joue pas dans ta tête, c'est ton corps qui appuie sur le frein avant même que tu réfléchisses, pour te protéger d'un truc. Comprendre ne suffit pas. C'est là-dessous que ça se règle.",
+                opening: ""
             }
         };
 
@@ -743,6 +798,7 @@
         let currentQuestion = 1;
         const totalQuestions = 9;
         let answers = {};
+        let dominantProfile = null;
 
         function startQuiz() {
             document.getElementById("landing").style.display = "none";
@@ -859,11 +915,10 @@
             };
 
             document.getElementById("profileName").textContent = profileData.name + (secondary ? ` (avec une composante ${cleanProfileName(profiles[secondary].name)})` : "");
-            document.getElementById("profileScore").textContent = `${Math.round(maxPercent)}%`;
             document.getElementById("profileDescription").textContent = profileData.description;
-            document.getElementById("profileOpening").textContent = `"${profileData.opening}"`;
 
-            // 🔌 POINT D'INTÉGRATION WHATSAPP, Voir submitEmail()
+            dominantProfile = dominant;
+
             console.log("Quiz terminé:", {
                 dominant,
                 dominantPercent: Math.round(maxPercent),
@@ -941,8 +996,28 @@
             // Pour l'instant, log dans la console
             console.log("📧 Lead à envoyer (WhatsApp/Instagram):", leadData);
 
+            // Reveal full analysis after contact submission
+            document.getElementById("fullAnalysis").style.display = "block";
+
             alert(`✅ Merci ! Je t'envoie ton analyse en message perso.\n\nTon profil: ${profiles[dominant].name}`);
             document.getElementById("emailInput").value = "";
+        }
+
+        function openWhatsApp() {
+            if (!dominantProfile) return;
+
+            const messages = {
+                "Poursuivant": "Salut Hugo, j'ai fait le quiz, je suis tombé sur Le Poursuivant.",
+                "Contrôleur": "Salut Hugo, j'ai fait le quiz, je suis tombé sur Le Contrôleur.",
+                "Mur": "Salut Hugo, j'ai fait le quiz, je suis tombé sur Le Mur émotionnel.",
+                "Sauveur": "Salut Hugo, j'ai fait le quiz, je suis tombé sur Le Sauveur.",
+                "Indécis": "Salut Hugo, j'ai fait le quiz, je suis tombé sur L'Indécis."
+            };
+
+            const message = messages[dominantProfile];
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/33656687129?text=${encodedMessage}`;
+            window.open(whatsappURL, "_blank");
         }
 
         document.addEventListener("DOMContentLoaded", function() {
