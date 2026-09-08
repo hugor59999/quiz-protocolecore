@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pourquoi tes relations finissent toujours de la même façon ?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Helvetica Neue', sans-serif;
+            background: #0B0F16;
+            color: #E8E8E8;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #1A1F2E;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Landing */
+        .landing {
+            text-align: center;
+        }
+
+        .landing h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #86ABD4;
+            line-height: 1.3;
+        }
+
+        .landing p {
+            font-size: 16px;
+            color: #B8B8B8;
+            margin-bottom: 30px;
+        }
+
+        .btn-start {
+            background: #86ABD4;
+            color: #0B0F16;
+            border: none;
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-start:hover {
+            background: #A0C0E8;
+            transform: translateY(-2px);
+        }
+
+        /* Quiz */
+        .quiz {
+            display: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #2A3142;
+            border-radius: 2px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #86ABD4;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: #888;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .question h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #E8E8E8;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .answer-option {
+            display: flex;
+            align-items: flex-start;
+            background: #252D3D;
+            border: 2px solid #333844;
+            padding: 16px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #D0D0D0;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .answer-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
+            margin-right: 14px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #86ABD4;
+        }
+
+        .answer-option label {
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+
+        .answer-option:hover {
+            background: #2E3644;
+            border-color: #86ABD4;
+        }
+
+        .answer-option input[type="radio"]:checked + label,
+        .answer-option input[type="radio"]:checked {
+            color: #FFFFFF;
+        }
+
+        .answer-option:has(input[type="radio"]:checked) {
+            background: #1E5A7A;
+            border-color: #86ABD4;
+            color: #FFFFFF;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            justify-content: space-between;
+        }
+
+        .btn-next,
+        .btn-prev {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-next {
+            background: #86ABD4;
+            color: #0B0F16;
+        }
+
+        .btn-next:hover:not(:disabled) {
+            background: #A0C0E8;
+        }
+
+        .btn-next:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .btn-prev {
+            background: #333844;
+            color: #D0D0D0;
+        }
+
+        .btn-prev:hover {
+            background: #444850;
+        }
+
+        /* Result */
+        .result {
+            display: none;
+            text-align: center;
+        }
+
+        .result h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #86ABD4;
+            margin-bottom: 15px;
+        }
+
+        .result-score {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        .result-description {
+            background: #252D3D;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: left;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #D0D0D0;
+        }
+
+        .result-description strong {
+            color: #86ABD4;
+        }
+
+        .result-opening {
+            font-size: 16px;
+            font-style: italic;
+            color: #A8B5C8;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #1E2333;
+            border-left: 3px solid #86ABD4;
+            text-align: left;
+        }
+
+        .email-form {
+            background: #252D3D;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .email-form h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #E8E8E8;
+            margin-bottom: 15px;
+        }
+
+        .email-form p {
+            font-size: 14px;
+            color: #B8B8B8;
+            margin-bottom: 15px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1A1F2E;
+            border: 1px solid #3A4250;
+            border-radius: 6px;
+            color: #E8E8E8;
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-family: inherit;
+        }
+
+        .email-input::placeholder {
+            color: #666;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: #86ABD4;
+            box-shadow: 0 0 0 2px rgba(134, 171, 212, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #86ABD4;
+            color: #0B0F16;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: #A0C0E8;
+        }
+
+        .btn-submit:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .disclaimer {
+            font-size: 12px;
+            color: #666;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #333844;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .landing h1 {
+                font-size: 24px;
+            }
+
+            .question h2 {
+                font-size: 18px;
+            }
+
+            .answer-option {
+                padding: 14px 16px;
+                font-size: 14px;
+            }
+
+            .result h2 {
+                font-size: 28px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .btn-prev {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Landing -->
+        <div id="landing" class="landing">
+            <h1>Pourquoi tes relations finissent toujours de la même façon ?</h1>
+            <p>Découvre le pattern qui se répète — en 9 questions.</p>
+            <button class="btn-start" onclick="startQuiz()">Commencer</button>
+        </div>
+
+        <!-- Quiz -->
+        <div id="quiz" class="quiz">
+            <div class="progress-text">
+                <span id="currentQuestion">1</span> / 9
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Q1 -->
+            <div class="question active" id="q1">
+                <h2>Au travail, tu es plutôt quelqu'un qui...</h2>
+                <div class="answers">
+                    <label class="answer-option">
+                        <input type="radio" name="q1" value="Contrôleur">
+                        <label>Crée une vision claire et embarque les autres dedans</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q1" value="Mur">
+                        <label>Bosse bien seul, mais délègue difficilement ses vrais défis</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q1" value="Sauveur">
+                        <label>Porte beaucoup, finit souvent par faire le travail des autres</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q1" value="Indécis">
+                        <label>S'intéresse à dix projets mais termine rarement celui qu'il a commencé</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q1" value="Poursuivant">
+                        <label>Écoute tout le monde, cherche l'approbation avant d'avancer</label>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question" id="q2">
+                <h2>Le truc que tu remarques, c'est qu'au travail tu gères, mais en amour...</h2>
+                <div class="answers">
+                    <label class="answer-option">
+                        <input type="radio" name="q2" value="MurStrong">
+                        <label>Tu es autonome et efficace au job — mais en relation ça crée de la distance, tu te fermes</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q2" value="ControléurMur">
+                        <label>Tu maîtrises tout au travail — mais elle, c'est un électron libre, et ça tu ne sais pas gérer</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q2" value="IndécisStrong">
+                        <label>Tu décides vite au job — mais en amour tu hésites tout le temps, peur de te tromper</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q2" value="SauveurStrong">
+                        <label>Tu aides tout le monde au travail — et en amour pareil, tu t'oublies complètement</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q2" value="PoursuivantControle">
+                        <label>Tu es sûr de toi au travail — mais en amour tu as peur de perdre, alors tu serres la vis</label>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question" id="q3">
+                <h2>Quand une relation devient sérieuse (elle parle futur, engagement)...</h2>
+                <div class="answers">
+                    <label class="answer-option">
+                        <input type="radio" name="q3" value="MurStrong">
+                        <label>Tu bloques un peu, t'aimes pas cette pression, tu prends du recul</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q3" value="IndécisStrong">
+                        <label>C'est excitant et flippant à la fois — tu veux, puis tu repenses à ta liberté</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q3" value="PoursuivantSauveur">
+                        <label>Tu deviens plus présent, tu construis déjà tout dans ta tête</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q3" value="ControléurIndécis">
+                        <label>Tu testes discrètement si elle est fiable, tu te fais un peu distant pour voir</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q3" value="Sauveur">
+                        <label>Tu dis oui à ce qui lui fait plaisir, tu t'adaptes</label>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question" id="q4">
+                <h2>Quand tu dois montrer une vulnérabilité (un doute, une faiblesse)...</h2>
+                <div class="answers">
+                    <label class="answer-option">
+                        <input type="radio" name="q4" value="MurStrong">
+                        <label>Tu la caches, tu préfères montrer que tu gères, qu'il faut être fort</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q4" value="IndécisStrong">
+                        <label>Ça dépend du jour — parfois très ouvert, parfois complètement fermé</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q4" value="PoursuivantStrong">
+                        <label>Tu la montres, mais tu cherches vite à être rassuré derrière</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q4" value="ControléurMur">
+                        <label>Tu ne la montres qu'à une ou deux personnes de confiance, jamais en public</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q4" value="Sauveur">
+                        <label>Tu la gardes pour toi pour ne pas peser sur l'autre</label>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question" id="q5">
+                <h2>Elle dit qu'elle a besoin d'espace. Ta réaction honnête...</h2>
+                <div class="answers">
+                    <label class="answer-option">
+                        <input type="radio" name="q5" value="MurStrong">
+                        <label>D'accord, tu te fermes aussi, tu te concentres sur autre chose</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q5" value="IndécisStrong">
+                        <label>Tu oscilles — parfois tu la relances, parfois tu l'ignores, selon tes doutes</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q5" value="PoursuivantSauveur">
+                        <label>Tu dois te retenir de vérifier trop souvent si tout va bien</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q5" value="ControléurMur">
+                        <label>Tu acceptes, mais tu notes mentalement ce qu'elle fait pendant cet espace</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q5" value="PoursuivantStrong">
+                        <label>Tu paniques un peu, tu veux en parler tout de suite pour te rassurer</label>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="question" id="q6">
+                <h2>Quand tu es stressé (perso ou pro), ton réflexe c'est...</h2>
+                <div class="answers">
+                    <label class="answer-option">
+                        <input type="radio" name="q6" value="MurStrong">
+                        <label>Tu te replies, tu gères en solo, tu peux te murer pendant des jours</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q6" value="IndécisStrong">
+                        <label>Ça dépend du jour : parfois tu te fermes, parfois tu demandes du soutien</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q6" value="SauveurStrong">
+                        <label>Tu portes la charge, tu fais comme si c'était normal, tu aides même les autres</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q6" value="ControléurStrong">
+                        <label>Tu deviens hyper-vigilant, tu veux tout contrôler dans le détail</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q6" value="PoursuivantStrong">
+                        <label>Tu cherches à te rassurer auprès d'elle, tu as besoin de sa présence</label>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="question" id="q7">
+                <h2>Après une rupture ou un moment critique...</h2>
+                <div class="answers">
+                    <label class="answer-option">
+                        <input type="radio" name="q7" value="MurControle">
+                        <label>Silence radio, tu te mures, c'est à elle de venir</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q7" value="IndécisStrong">
+                        <label>Tu demandes du temps, puis tu ressens un truc, puis tu changes d'avis — c'est confus</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q7" value="SauveurStrong">
+                        <label>Tu te blâmes direct, tu penses que c'était à toi de tout réparer</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q7" value="PoursuivantStrong">
+                        <label>Tu veux comprendre et récupérer la situation tout de suite</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q7" value="Contrôleur">
+                        <label>Tu analyses froidement qui a failli, tu cherches la solution logique</label>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="question" id="q8">
+                <h2>Dans les moments d'affection, de proximité...</h2>
+                <div class="answers">
+                    <label class="answer-option">
+                        <input type="radio" name="q8" value="MurStrong">
+                        <label>Tu es un peu figé, tu n'arrives pas à être démonstratif même quand tu le ressens</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q8" value="PoursuivantIndécis">
+                        <label>Tu en profites mais une part de toi guette déjà quand ça va s'arrêter</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q8" value="ControléurMur">
+                        <label>Tu es bien, mais tu te retiens d'en dire trop, de peur d'être « acquis »</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q8" value="SauveurStrong">
+                        <label>Tu donnes beaucoup, tu veux qu'elle se sente parfaitement bien</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q8" value="IndécisStrong">
+                        <label>Ça dépend — des fois tu es à fond, des fois tu te braques sur un détail</label>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="question" id="q9">
+                <h2>Honnêtement, ce qui t'effraie le plus en relation...</h2>
+                <div class="answers">
+                    <label class="answer-option">
+                        <input type="radio" name="q9" value="MurStrong">
+                        <label>D'être trop vulnérable, de dépendre émotionnellement de quelqu'un</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q9" value="IndécisStrong">
+                        <label>De t'engager « pour de vrai », de choisir sans porte de sortie</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q9" value="ControléurStrong">
+                        <label>De perdre le contrôle, que l'autre devienne imprévisible</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q9" value="PoursuivantStrong">
+                        <label>D'être abandonné, de ne pas être assez pour elle</label>
+                    </label>
+                    <label class="answer-option">
+                        <input type="radio" name="q9" value="SauveurStrong">
+                        <label>De ne pas réussir à la rendre heureuse, de ne pas être à la hauteur</label>
+                    </label>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-prev" onclick="previousQuestion()" id="btnPrev">← Précédent</button>
+                <button class="btn-next" onclick="nextQuestion()" id="btnNext" disabled>Suivant →</button>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div id="result" class="result">
+            <h2 id="profileName"></h2>
+            <div class="result-score" id="profileScore"></div>
+            <div class="result-description" id="profileDescription"></div>
+            <div class="result-opening" id="profileOpening"></div>
+            <div class="email-form">
+                <h3>Reçois l'analyse complète</h3>
+                <p>Accès immédiat à tes premières pistes d'action.</p>
+                <input type="email" id="emailInput" class="email-input" placeholder="Ton email" />
+                <button class="btn-submit" onclick="submitEmail()">Envoyer</button>
+            </div>
+            <div class="disclaimer">
+                <p>Cet outil est une aide à la prise de conscience de tes patterns relationnels. Il ne remplace pas un diagnostic psychologique ni un suivi professionnel.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const profiles = {
+            "Poursuivant": {
+                name: "Le Poursuivant",
+                max: 15,
+                description: "Tu as du mal à être seul. Quand l'autre s'éloigne, ça t'active — une boule au ventre, le besoin de te rassurer. Tu peux confondre le manque avec l'amour, et rester accroché à quelqu'un juste pour ne pas ressentir le vide.",
+                opening: "Tu as une grande capacité à chercher la connexion. C'est une force. Mais apprendre à t'enraciner en toi d'abord, avant de chercher chez l'autre — ça change tout."
+            },
+            "Contrôleur": {
+                name: "Le Contrôleur",
+                max: 13,
+                description: "Tu as besoin de clarté, de cadre, de prévisibilité. Ce qui fait ta force au travail devient un piège en amour : dès que l'autre est autonome ou imprévisible, tu le vis comme une menace et tu resserres.",
+                opening: "Tu as une vraie rigueur, tu veux de la clarté et de la solidité. C'est une force en business. Mais en amour, la maîtrise totale éteint la confiance. Il y a un leadership qui attire vraiment — celui qui laisse respirer."
+            },
+            "Mur": {
+                name: "Le Mur émotionnel",
+                max: 20,
+                description: "Tu gardes tout à distance. Les conversations intimes, les émotions à mettre en mots, ça t'épuise ou te met mal à l'aise — alors tu te fermes, tu deviens froid, tu gères seul. Tu es à l'aise quand tu maîtrises ; dès que c'est un électron libre que tu ne contrôles pas, tu te retires.",
+                opening: "Tu as une belle autonomie, tu ne dépends pas émotionnellement. C'est une force. Mais l'intimité n'est pas une faiblesse — c'est la vraie force d'une relation. Apprendre à te montrer vulnérable, ça libère tout."
+            },
+            "Sauveur": {
+                name: "Le Sauveur",
+                max: 15,
+                description: "Tu te rends indispensable. Tu portes la relation, tu réponds aux besoins de l'autre, tu performes pour être aimé — et tu t'oublies en chemin. Le problème n'est pas que tu donnes, c'est que tu donnes pour mériter ta place, jusqu'à disparaître.",
+                opening: "Tu as un vrai cœur et de l'empathie — ça attire. Mais donner sans fin t'épuise et crée une fausse relation. Celle qui t'aime vraiment ne veut pas d'un martyr — elle veut un égal."
+            },
+            "Indécis": {
+                name: "L'Indécis",
+                max: 19,
+                description: "Tu oscilles. Tu t'engages puis tu prends peur, tu quittes puis tu veux revenir, tu es enthousiaste puis tu doutes. Personne ne sait sur quel pied danser — toi le premier.",
+                opening: "Tu gardes tes options ouvertes, tu réfléchis avant d'agir. C'est prudent. Mais l'indécision maintient tout le monde en suspens — y compris toi. Il y a une clarté qui libère, même si elle fait peur."
+            }
+        };
+
+        const scoringMap = {
+            "Contrôleur": { "Contrôleur": 1 },
+            "Mur": { "Mur": 1 },
+            "Sauveur": { "Sauveur": 1 },
+            "Indécis": { "Indécis": 1 },
+            "Poursuivant": { "Poursuivant": 1 },
+            "MurStrong": { "Mur": 2 },
+            "ControléurMur": { "Contrôleur": 1, "Mur": 1 },
+            "IndécisStrong": { "Indécis": 2 },
+            "SauveurStrong": { "Sauveur": 2 },
+            "PoursuivantControle": { "Poursuivant": 1, "Contrôleur": 1 },
+            "PoursuivantSauveur": { "Poursuivant": 1, "Sauveur": 1 },
+            "ControléurIndécis": { "Contrôleur": 1, "Indécis": 1 },
+            "PoursuivantIndécis": { "Poursuivant": 1, "Indécis": 1 },
+            "ControléurStrong": { "Contrôleur": 2 },
+            "PoursuivantStrong": { "Poursuivant": 2 },
+            "MurControle": { "Mur": 1, "Contrôleur": 1 }
+        };
+
+        let currentQuestion = 1;
+        const totalQuestions = 9;
+        let answers = {};
+
+        function startQuiz() {
+            document.getElementById("landing").style.display = "none";
+            document.getElementById("quiz").style.display = "block";
+            showQuestion(1);
+        }
+
+        function showQuestion(n) {
+            const questions = document.querySelectorAll(".question");
+            questions.forEach(q => q.classList.remove("active"));
+            document.getElementById("q" + n).classList.add("active");
+
+            currentQuestion = n;
+            updateProgress();
+            updateNavButtons();
+
+            const selectedAnswer = answers["q" + n];
+            if (selectedAnswer) {
+                const radio = document.querySelector(`input[name="q${n}"][value="${selectedAnswer}"]`);
+                if (radio) radio.checked = true;
+            }
+        }
+
+        function nextQuestion() {
+            const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+            if (!selected) return;
+
+            answers["q" + currentQuestion] = selected.value;
+
+            if (currentQuestion < totalQuestions) {
+                showQuestion(currentQuestion + 1);
+            } else {
+                showResult();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                showQuestion(currentQuestion - 1);
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById("progressFill").style.width = progress + "%";
+            document.getElementById("currentQuestion").textContent = currentQuestion;
+        }
+
+        function updateNavButtons() {
+            document.getElementById("btnPrev").style.display = currentQuestion === 1 ? "none" : "block";
+
+            const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+            const nextBtn = document.getElementById("btnNext");
+            nextBtn.disabled = !selected;
+            nextBtn.textContent = currentQuestion === totalQuestions ? "Voir mon résultat" : "Suivant →";
+
+            document.querySelectorAll(`input[name="q${currentQuestion}"]`).forEach(radio => {
+                radio.addEventListener("change", () => {
+                    nextBtn.disabled = false;
+                });
+            });
+        }
+
+        function showResult() {
+            const scores = {
+                "Poursuivant": 0,
+                "Contrôleur": 0,
+                "Mur": 0,
+                "Sauveur": 0,
+                "Indécis": 0
+            };
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const answer = answers["q" + i];
+                if (answer && scoringMap[answer]) {
+                    const points = scoringMap[answer];
+                    for (let profile in points) {
+                        scores[profile] += points[profile];
+                    }
+                }
+            }
+
+            const percentages = {};
+            for (let profile in scores) {
+                const profileData = profiles[profile];
+                percentages[profile] = (scores[profile] / profileData.max) * 100;
+            }
+
+            let dominant = null;
+            let maxPercent = -1;
+            for (let profile in percentages) {
+                if (percentages[profile] > maxPercent) {
+                    maxPercent = percentages[profile];
+                    dominant = profile;
+                }
+            }
+
+            let secondary = null;
+            for (let profile in percentages) {
+                if (profile !== dominant && (maxPercent - percentages[profile]) < 15) {
+                    secondary = profile;
+                    break;
+                }
+            }
+
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").style.display = "block";
+
+            const profileData = profiles[dominant];
+            document.getElementById("profileName").textContent = profileData.name + (secondary ? ` (avec une composante ${profiles[secondary].name.toLowerCase()})` : "");
+            document.getElementById("profileScore").textContent = `${Math.round(maxPercent)}%`;
+            document.getElementById("profileDescription").textContent = profileData.description;
+            document.getElementById("profileOpening").textContent = `"${profileData.opening}"`;
+
+            // 🔌 POINT D'INTÉGRATION EMAILING — Voir submitEmail()
+            console.log("Quiz terminé:", {
+                dominant,
+                dominantPercent: Math.round(maxPercent),
+                secondary,
+                secondaryPercent: secondary ? Math.round(percentages[secondary]) : null,
+                allScores: scores,
+                allPercentages: percentages,
+                answers
+            });
+        }
+
+        function submitEmail() {
+            const email = document.getElementById("emailInput").value.trim();
+            if (!email || !email.includes("@")) {
+                alert("Veuillez entrer un email valide");
+                return;
+            }
+
+            // Recalculate scores for submission
+            const scores = {
+                "Poursuivant": 0,
+                "Contrôleur": 0,
+                "Mur": 0,
+                "Sauveur": 0,
+                "Indécis": 0
+            };
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const answer = answers["q" + i];
+                if (answer && scoringMap[answer]) {
+                    const points = scoringMap[answer];
+                    for (let profile in points) {
+                        scores[profile] += points[profile];
+                    }
+                }
+            }
+
+            const percentages = {};
+            for (let profile in scores) {
+                percentages[profile] = (scores[profile] / profiles[profile].max) * 100;
+            }
+
+            let dominant = null;
+            let maxPercent = -1;
+            for (let profile in percentages) {
+                if (percentages[profile] > maxPercent) {
+                    maxPercent = percentages[profile];
+                    dominant = profile;
+                }
+            }
+
+            // 🔌 POINT D'INTÉGRATION EMAILING
+            // ============================================
+            // Remplace le contenu de ce bloc avec ton intégration
+            //
+            // Structure de données à envoyer à ton outil d'emailing:
+            const leadData = {
+                email: email,
+                profile: dominant,
+                profileName: profiles[dominant].name,
+                profilePercent: Math.round(maxPercent),
+                timestamp: new Date().toISOString(),
+                allAnswers: answers,
+                allScores: percentages
+            };
+
+            // Exemple 1: Zapier/Webhook
+            // fetch('https://hooks.zapier.com/hooks/catch/YOUR_WEBHOOK_ID/', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(leadData)
+            // }).catch(err => console.error('Error:', err));
+
+            // Exemple 2: Brevo (SendinBlue)
+            // fetch('https://api.brevo.com/v3/contacts', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'api-key': 'YOUR_BREVO_API_KEY'
+            //     },
+            //     body: JSON.stringify({
+            //         email: email,
+            //         attributes: { PROFILE: dominant, PROFILE_PERCENT: maxPercent }
+            //     })
+            // }).catch(err => console.error('Error:', err));
+
+            // Pour l'instant, log dans la console
+            console.log("📧 Lead à envoyer à ton emailing:", leadData);
+
+            alert(`✅ Merci ! Nous avons bien reçu ton email.\n\nTon profil: ${profiles[dominant].name}`);
+            document.getElementById("emailInput").value = "";
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            updateNavButtons();
+        });
+    </script>
+</body>
+</html>
