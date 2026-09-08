@@ -55,17 +55,23 @@
             background: #86ABD4;
             color: #0B0F16;
             border: none;
-            padding: 14px 40px;
+            padding: 16px 48px;
             font-size: 16px;
             font-weight: 600;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+            box-shadow: 0 4px 15px rgba(134, 171, 212, 0.3);
         }
 
         .btn-start:hover {
             background: #A0C0E8;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(134, 171, 212, 0.4);
+        }
+
+        .btn-start:active {
+            transform: translateY(-1px);
         }
 
         /* Quiz */
@@ -124,43 +130,65 @@
         }
 
         .answer-option {
-            display: flex;
-            align-items: flex-start;
+            display: block;
             background: #252D3D;
             border: 2px solid #333844;
-            padding: 16px 18px;
-            border-radius: 8px;
+            padding: 18px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 15px;
             color: #D0D0D0;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
             position: relative;
+            user-select: none;
         }
 
         .answer-option input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            min-width: 18px;
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #555;
+            border-radius: 50%;
+            cursor: pointer;
             margin-right: 14px;
             margin-top: 2px;
-            cursor: pointer;
-            accent-color: #86ABD4;
+            vertical-align: middle;
+            background: transparent;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
-        .answer-option label {
-            cursor: pointer;
+        .answer-option input[type="radio"]:hover {
+            border-color: #86ABD4;
+            box-shadow: 0 0 8px rgba(134, 171, 212, 0.3);
+        }
+
+        .answer-option input[type="radio"]:checked {
+            background: #86ABD4;
+            border-color: #86ABD4;
+            box-shadow: 0 0 12px rgba(134, 171, 212, 0.5);
+        }
+
+        .answer-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .answer-option span {
             flex: 1;
-            margin: 0;
+            line-height: 1.5;
         }
 
         .answer-option:hover {
             background: #2E3644;
             border-color: #86ABD4;
+            box-shadow: 0 4px 12px rgba(134, 171, 212, 0.15);
         }
 
-        .answer-option input[type="radio"]:checked + label,
         .answer-option input[type="radio"]:checked {
-            color: #FFFFFF;
+            accent-color: #86ABD4;
         }
 
         .answer-option:has(input[type="radio"]:checked) {
@@ -179,37 +207,48 @@
         .btn-next,
         .btn-prev {
             flex: 1;
-            padding: 12px 20px;
-            font-size: 14px;
+            padding: 14px 24px;
+            font-size: 15px;
             font-weight: 600;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+            letter-spacing: 0.3px;
         }
 
         .btn-next {
             background: #86ABD4;
             color: #0B0F16;
+            box-shadow: 0 4px 15px rgba(134, 171, 212, 0.3);
         }
 
         .btn-next:hover:not(:disabled) {
             background: #A0C0E8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(134, 171, 212, 0.4);
+        }
+
+        .btn-next:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         .btn-next:disabled {
-            background: #555;
+            background: #444;
             cursor: not-allowed;
-            opacity: 0.5;
+            opacity: 0.4;
+            box-shadow: none;
         }
 
         .btn-prev {
-            background: #333844;
-            color: #D0D0D0;
+            background: transparent;
+            color: #86ABD4;
+            border: 2px solid #86ABD4;
         }
 
         .btn-prev:hover {
-            background: #444850;
+            background: rgba(134, 171, 212, 0.1);
+            box-shadow: 0 4px 12px rgba(134, 171, 212, 0.2);
         }
 
         /* Result */
@@ -368,7 +407,7 @@
         <!-- Landing -->
         <div id="landing" class="landing">
             <h1>Pourquoi tes relations finissent toujours de la même façon ?</h1>
-            <p>Découvre le pattern qui se répète — en 9 questions.</p>
+            <p>Découvre le pattern qui se répète,en 9 questions.</p>
             <button class="btn-start" onclick="startQuiz()">Commencer</button>
         </div>
 
@@ -387,23 +426,23 @@
                 <div class="answers">
                     <label class="answer-option">
                         <input type="radio" name="q1" value="Contrôleur">
-                        <label>Crée une vision claire et embarque les autres dedans</label>
+                        <span>Crée une vision claire et embarque les autres dedans</span>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q1" value="Mur">
-                        <label>Bosse bien seul, mais délègue difficilement ses vrais défis</label>
+                        <span>Bosse bien seul, mais délègue difficilement ses vrais défis</span>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q1" value="Sauveur">
-                        <label>Porte beaucoup, finit souvent par faire le travail des autres</label>
+                        <span>Porte beaucoup, finit souvent par faire le travail des autres</span>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q1" value="Indécis">
-                        <label>S'intéresse à dix projets mais termine rarement celui qu'il a commencé</label>
+                        <span>S'intéresse à dix projets mais termine rarement celui qu'il a commencé</span>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q1" value="Poursuivant">
-                        <label>Écoute tout le monde, cherche l'approbation avant d'avancer</label>
+                        <span>Écoute tout le monde, cherche l'approbation avant d'avancer</span>
                     </label>
                 </div>
             </div>
@@ -414,23 +453,23 @@
                 <div class="answers">
                     <label class="answer-option">
                         <input type="radio" name="q2" value="MurStrong">
-                        <label>Tu es autonome et efficace au job — mais en relation ça crée de la distance, tu te fermes</label>
+                        <label>Tu es autonome et efficace au job,mais en relation ça crée de la distance, tu te fermes</label>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q2" value="ControléurMur">
-                        <label>Tu maîtrises tout au travail — mais elle, c'est un électron libre, et ça tu ne sais pas gérer</label>
+                        <label>Tu maîtrises tout au travail,mais elle, c'est un électron libre, et ça tu ne sais pas gérer</label>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q2" value="IndécisStrong">
-                        <label>Tu décides vite au job — mais en amour tu hésites tout le temps, peur de te tromper</label>
+                        <label>Tu décides vite au job,mais en amour tu hésites tout le temps, peur de te tromper</label>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q2" value="SauveurStrong">
-                        <label>Tu aides tout le monde au travail — et en amour pareil, tu t'oublies complètement</label>
+                        <label>Tu aides tout le monde au travail,et en amour pareil, tu t'oublies complètement</label>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q2" value="PoursuivantControle">
-                        <label>Tu es sûr de toi au travail — mais en amour tu as peur de perdre, alors tu serres la vis</label>
+                        <label>Tu es sûr de toi au travail,mais en amour tu as peur de perdre, alors tu serres la vis</label>
                     </label>
                 </div>
             </div>
@@ -445,7 +484,7 @@
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q3" value="IndécisStrong">
-                        <label>C'est excitant et flippant à la fois — tu veux, puis tu repenses à ta liberté</label>
+                        <label>C'est excitant et flippant à la fois,tu veux, puis tu repenses à ta liberté</label>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q3" value="PoursuivantSauveur">
@@ -472,7 +511,7 @@
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q4" value="IndécisStrong">
-                        <label>Ça dépend du jour — parfois très ouvert, parfois complètement fermé</label>
+                        <label>Ça dépend du jour,parfois très ouvert, parfois complètement fermé</label>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q4" value="PoursuivantStrong">
@@ -499,7 +538,7 @@
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q5" value="IndécisStrong">
-                        <label>Tu oscilles — parfois tu la relances, parfois tu l'ignores, selon tes doutes</label>
+                        <label>Tu oscilles,parfois tu la relances, parfois tu l'ignores, selon tes doutes</label>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q5" value="PoursuivantSauveur">
@@ -553,7 +592,7 @@
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q7" value="IndécisStrong">
-                        <label>Tu demandes du temps, puis tu ressens un truc, puis tu changes d'avis — c'est confus</label>
+                        <label>Tu demandes du temps, puis tu ressens un truc, puis tu changes d'avis,c'est confus</label>
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q7" value="SauveurStrong">
@@ -592,7 +631,7 @@
                     </label>
                     <label class="answer-option">
                         <input type="radio" name="q8" value="IndécisStrong">
-                        <label>Ça dépend — des fois tu es à fond, des fois tu te braques sur un détail</label>
+                        <label>Ça dépend,des fois tu es à fond, des fois tu te braques sur un détail</label>
                     </label>
                 </div>
             </div>
@@ -653,32 +692,32 @@
             "Poursuivant": {
                 name: "Le Poursuivant",
                 max: 15,
-                description: "Tu as du mal à être seul. Quand l'autre s'éloigne, ça t'active — une boule au ventre, le besoin de te rassurer. Tu peux confondre le manque avec l'amour, et rester accroché à quelqu'un juste pour ne pas ressentir le vide.",
-                opening: "Tu as une grande capacité à chercher la connexion. C'est une force. Mais apprendre à t'enraciner en toi d'abord, avant de chercher chez l'autre — ça change tout."
+                description: "Tu as du mal à être seul. Quand l'autre s'éloigne, ça t'active,une boule au ventre, le besoin de te rassurer. Tu peux confondre le manque avec l'amour, et rester accroché à quelqu'un juste pour ne pas ressentir le vide.",
+                opening: "Tu as une grande capacité à chercher la connexion. C'est une force. Mais apprendre à t'enraciner en toi d'abord, avant de chercher chez l'autre,ça change tout."
             },
             "Contrôleur": {
                 name: "Le Contrôleur",
                 max: 13,
                 description: "Tu as besoin de clarté, de cadre, de prévisibilité. Ce qui fait ta force au travail devient un piège en amour : dès que l'autre est autonome ou imprévisible, tu le vis comme une menace et tu resserres.",
-                opening: "Tu as une vraie rigueur, tu veux de la clarté et de la solidité. C'est une force en business. Mais en amour, la maîtrise totale éteint la confiance. Il y a un leadership qui attire vraiment — celui qui laisse respirer."
+                opening: "Tu as une vraie rigueur, tu veux de la clarté et de la solidité. C'est une force en business. Mais en amour, la maîtrise totale éteint la confiance. Il y a un leadership qui attire vraiment,celui qui laisse respirer."
             },
             "Mur": {
                 name: "Le Mur émotionnel",
                 max: 20,
-                description: "Tu gardes tout à distance. Les conversations intimes, les émotions à mettre en mots, ça t'épuise ou te met mal à l'aise — alors tu te fermes, tu deviens froid, tu gères seul. Tu es à l'aise quand tu maîtrises ; dès que c'est un électron libre que tu ne contrôles pas, tu te retires.",
-                opening: "Tu as une belle autonomie, tu ne dépends pas émotionnellement. C'est une force. Mais l'intimité n'est pas une faiblesse — c'est la vraie force d'une relation. Apprendre à te montrer vulnérable, ça libère tout."
+                description: "Tu gardes tout à distance. Les conversations intimes, les émotions à mettre en mots, ça t'épuise ou te met mal à l'aise,alors tu te fermes, tu deviens froid, tu gères seul. Tu es à l'aise quand tu maîtrises ; dès que c'est un électron libre que tu ne contrôles pas, tu te retires.",
+                opening: "Tu as une belle autonomie, tu ne dépends pas émotionnellement. C'est une force. Mais l'intimité n'est pas une faiblesse,c'est la vraie force d'une relation. Apprendre à te montrer vulnérable, ça libère tout."
             },
             "Sauveur": {
                 name: "Le Sauveur",
                 max: 15,
-                description: "Tu te rends indispensable. Tu portes la relation, tu réponds aux besoins de l'autre, tu performes pour être aimé — et tu t'oublies en chemin. Le problème n'est pas que tu donnes, c'est que tu donnes pour mériter ta place, jusqu'à disparaître.",
-                opening: "Tu as un vrai cœur et de l'empathie — ça attire. Mais donner sans fin t'épuise et crée une fausse relation. Celle qui t'aime vraiment ne veut pas d'un martyr — elle veut un égal."
+                description: "Tu te rends indispensable. Tu portes la relation, tu réponds aux besoins de l'autre, tu performes pour être aimé,et tu t'oublies en chemin. Le problème n'est pas que tu donnes, c'est que tu donnes pour mériter ta place, jusqu'à disparaître.",
+                opening: "Tu as un vrai cœur et de l'empathie,ça attire. Mais donner sans fin t'épuise et crée une fausse relation. Celle qui t'aime vraiment ne veut pas d'un martyr,elle veut un égal."
             },
             "Indécis": {
                 name: "L'Indécis",
                 max: 19,
-                description: "Tu oscilles. Tu t'engages puis tu prends peur, tu quittes puis tu veux revenir, tu es enthousiaste puis tu doutes. Personne ne sait sur quel pied danser — toi le premier.",
-                opening: "Tu gardes tes options ouvertes, tu réfléchis avant d'agir. C'est prudent. Mais l'indécision maintient tout le monde en suspens — y compris toi. Il y a une clarté qui libère, même si elle fait peur."
+                description: "Tu oscilles. Tu t'engages puis tu prends peur, tu quittes puis tu veux revenir, tu es enthousiaste puis tu doutes. Personne ne sait sur quel pied danser,toi le premier.",
+                opening: "Tu gardes tes options ouvertes, tu réfléchis avant d'agir. C'est prudent. Mais l'indécision maintient tout le monde en suspens,y compris toi. Il y a une clarté qui libère, même si elle fait peur."
             }
         };
 
@@ -818,7 +857,7 @@
             document.getElementById("profileDescription").textContent = profileData.description;
             document.getElementById("profileOpening").textContent = `"${profileData.opening}"`;
 
-            // 🔌 POINT D'INTÉGRATION EMAILING — Voir submitEmail()
+            // 🔌 POINT D'INTÉGRATION EMAILING,Voir submitEmail()
             console.log("Quiz terminé:", {
                 dominant,
                 dominantPercent: Math.round(maxPercent),
